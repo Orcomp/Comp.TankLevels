@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("a603d8cf-c9ed-494f-8e9b-dc912b50b34b") = "TankLevels", "TankLevels\TankLevels.csproj", "2a8bdf87-a47f-4b36-9445-b44487e60b7d"
+EndProject
+Project("04630042-a00e-4d65-81df-1a823606db8b") = "TankLevels.Tests", "TankLevels.Tests\TankLevels.Tests.csproj", "2a8bdf87-a47f-4b36-9445-b44487e60b7d"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		2a8bdf87-a47f-4b36-9445-b44487e60b7d.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		2a8bdf87-a47f-4b36-9445-b44487e60b7d.Debug|Any CPU.Build.0 = Debug|Any CPU
+		2a8bdf87-a47f-4b36-9445-b44487e60b7d.Release|Any CPU.ActiveCfg = Release|Any CPU
+		2a8bdf87-a47f-4b36-9445-b44487e60b7d.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
