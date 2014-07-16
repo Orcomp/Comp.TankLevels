@@ -12,10 +12,10 @@ namespace TankLevels.PerformanceTests.Infrastructure
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using Demo;
 	using Entities;
 	using NUnitBenchmarker;
 	using NUnitBenchmarker.Configuration;
-	using Sample;
 	using Tests.Infrastructure;
 
 	#endregion

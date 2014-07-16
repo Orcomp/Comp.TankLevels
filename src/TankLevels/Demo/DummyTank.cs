@@ -14,7 +14,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-namespace TankLevels.Sample
+namespace TankLevels.Demo
 {
 	#region using...
 	using System;

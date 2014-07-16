@@ -13,10 +13,16 @@ namespace TankLevels.Tests.Infrastructure
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.Linq;
-	using Sample;
+	using Demo;
+	using Entities;
+	using NUnit.Framework;
+	
 
 	#endregion
 
+	/// <summary>
+	/// Class TankTestBase. Contains helper methods for ITank testing
+	/// </summary>
 	public class TankTestBase
 	{
 		#region Constants
@@ -30,6 +36,17 @@ namespace TankLevels.Tests.Infrastructure
 		#endregion
 
 		#region Methods
+		[DebuggerStepThrough]
+		protected static TimeSpan Duration(int hours)
+		{
+			return new TimeSpan(0, hours, 0, 0);
+		}
+
+		protected static TimeSpan Duration(double hours)
+		{
+			return TimeSpan.FromHours(hours);
+		}
+
 		[DebuggerStepThrough]
 		protected static DateTime Time(int hours)
 		{
@@ -125,5 +142,43 @@ namespace TankLevels.Tests.Infrastructure
 				});
 		}
 		#endregion
+
+		protected IEnumerable<TankLevel> MultiplyTankLevels(IEnumerable<TankLevel> tankLevels, int multiplyer)
+		{
+			return tankLevels.Select(tankLevel => MultiplyTankLevel(tankLevel, multiplyer));
+		}
+
+		private TankLevel MultiplyTankLevel(TankLevel tankLevel, int multiplyer)
+		{
+			return new TankLevel(tankLevel.DateTime, tankLevel.Level*multiplyer);
+		}
+
+		protected void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, double minValue, double maxValue)
+		{
+			var tankLevelsArray = tankLevels.ToArray();
+
+			var tank = CreateTank(minValue, maxValue);
+			ActAndAssert(startTime, duration, quantity, tankLevelsArray, expectedIsSuccess, expectedHour, tank);
+
+			tank = CreateTank(-maxValue, -minValue);
+			tankLevelsArray = MultiplyTankLevels(tankLevelsArray, -1).ToArray();
+			ActAndAssert(startTime, duration, -quantity, tankLevelsArray, expectedIsSuccess, expectedHour, tank);
+		}
+
+		private void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, ITank tank)
+		{
+			var result = tank.CheckOperation(startTime, duration, quantity, tankLevels);
+			if (result.IsSuccess)
+			{
+				Assert.IsTrue(expectedIsSuccess);
+
+				// 5000 ticks equals 50 nanoseconds.
+				Assert.Less(Math.Abs(Time(expectedHour).Ticks - result.StartTime.Ticks), 5000);
+			}
+			else
+			{
+				Assert.IsFalse(result.IsSuccess);
+			}
+		}
 	}
 }
