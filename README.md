@@ -38,28 +38,28 @@ This repository is prepared to jump start to the imlpementation instantly. The V
 * TankLevels.Tests
 * TankLevels.PerformanceTests
 
-**Tankevels project** 
+**TankLevels project** 
 
-The Tankevels project defines the
+The TankLevels project defines the
 
 * ITank interface with the CheckOperation method.
 * TankLevel entity 
 * CheckOperationResult entity
 
-It also defines two dummy imlementations for demonstrating how a future implementation fits to the unit test and performance test infrastructure
+It also defines two dummy imlementations for demonstrating how a future implementation fits to the unit test and performance test infrastructure.
 The two dummy imlementations are:
 * DummyTank
 * OtherDummyTank
 
-**Tankevels.Tests project** 
+**TankLevels.Tests project** 
 
-The Tankevels.Tests project contains the unit test infrastucture and the actual unit tests. Start with reading the detailed summary documentation of the TankLevel class.
+The TankLevels.Tests project contains the unit test infrastucture and the actual unit tests. Start with reading the detailed summary documentation of the TankLevel class.
 The only dependency of the project is the NuGet NUnit package.
 
 **TankLevels.PerformanceTests project** 
 
-The Tankevels.Tests project contains the performance test infrastucture and the actual performance tests. 
-The perfomance tests implemented using NunitBenchmarker (https://github.com/Orcomp/NUnitBenchmarker) project. Start with the TankPerformanceTests class and run the tests just as you would run an ordinary unit test.
+The TankLevels.Tests project contains the performance test infrastucture and the actual performance tests. 
+The perfomance tests implemented using NunitBenchmarker (https://github.com/Orcomp/NUnitBenchmarker). Start with the TankPerformanceTests class and run the tests just as you would run an ordinary unit test.
 
 To get an instant picture how cool things should happen when you run the performance test see the picture below:
 
