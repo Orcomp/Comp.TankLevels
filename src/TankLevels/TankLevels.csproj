@@ -59,6 +59,7 @@
     <Compile Include="Demo\OtherDummyTank.cs" />
     <Compile Include="Demo\DummyTank.cs" />
     <Compile Include="Simple\SimpleTank.cs" />
+    <Compile Include="Simple\SimpleTank.Old.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

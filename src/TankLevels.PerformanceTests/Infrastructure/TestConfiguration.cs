@@ -11,7 +11,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 	#region using...
 	using System.Collections.Generic;
 	using Entities;
-	using global::NUnitBenchmarker.Configuration;
+	using NUnitBenchmarker.Configuration;
 
 	#endregion
 

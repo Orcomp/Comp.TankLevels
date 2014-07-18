@@ -11,11 +11,13 @@ namespace TankLevels.PerformanceTests.Infrastructure
 	#region using...
 	using System;
 	using System.Collections.Generic;
+	using System.Diagnostics;
 	using System.Linq;
 	using Demo;
 	using Entities;
 	using NUnitBenchmarker;
 	using NUnitBenchmarker.Configuration;
+	
 	using Tests.Infrastructure;
 
 	#endregion
@@ -24,18 +26,20 @@ namespace TankLevels.PerformanceTests.Infrastructure
 	{
 		#region Constants
 		private const int IterationCount = 100;
-		private const int TankStartHour = 0;
-		private const int TankEndHour = 168;
-		private const int ParameterStartHour = -72;
-		private const int ParameterEndHour = 168 + 72;
-		private const int ParameterDurationMin = 0;
-		private const int ParameterDurationMax = 72;
+		private const double TankStartHour = 0;
+		private const double TankEndHour = 168;
+		private const double ParameterStartHour = -10;
+		private const double ParameterEndHour = 168 + 10;
+		private const double ParameterDurationMin = 0.0;
+		private const double ParameterDurationMax = 72.0;
 		#endregion
 
 		#region Properties
 		private IEnumerable<Type> ImplementationTypes
 		{
 			get { return new[] {typeof (DummyTank), typeof (OtherDummyTank)}; }
+			//get { return new[] {typeof (DummyTank) }; }
+
 		}
 
 		private static string[] TestCaseNames
@@ -57,8 +61,8 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			{
 				return new[]
 				{
-					TestCase.EmptyTankWithNoMaxMin,
-					TestCase.RandomTankWithNoMaxMin,
+					//TestCase.EmptyTankWithNoMaxMin,
+					//TestCase.RandomTankWithNoMaxMin,
 					TestCase.RandomTankWithMaxMin
 				};
 			}
@@ -86,12 +90,15 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			       let run = new Action<IPerformanceTestCaseConfiguration>(i =>
 			       {
 				       var config = (TestConfiguration) i;
+				       var trueCount = 0;
+					   var falseCount = 0;
 				       foreach (var p in config.Parameters)
 				       {
 					       // ReSharper disable once UnusedVariable
 					       var result = config.Tank.CheckOperation(p.StartTime, p.Duration, p.Quantity, config.TankLevels);
-					       // TODO: Check for expected ratio of true/false results depending on testCase
+					       var dummy = result.IsSuccess ? trueCount++ : falseCount++;
 				       }
+					   //Debug.WriteLine(string.Format("True: {0}, False: {1}", trueCount, falseCount));
 			       })
 			       select new TestConfiguration
 			       {
@@ -141,7 +148,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			for (var index = 0; index < result.Length; index++)
 			{
 				var startDate = GetRandomDateTime(Time(ParameterStartHour), Time(ParameterEndHour));
-				var duration = GetRandomTimeSpan(Time(GetRandomDouble(ParameterDurationMin, ParameterDurationMax)) - Time(0));
+				var duration = Duration(GetRandomDouble(ParameterDurationMin, ParameterDurationMax));
 				var quantity = GetRandomDouble(minQuantity, maxQuantity);
 				result[index] = new CheckOperationParameter(startDate, duration, quantity);
 			}

@@ -16,7 +16,6 @@ namespace TankLevels.Tests.Infrastructure
 	using Demo;
 	using Entities;
 	using NUnit.Framework;
-	
 
 	#endregion
 
@@ -29,10 +28,8 @@ namespace TankLevels.Tests.Infrastructure
 		private const double DoubleMissing = 987.654;
 		private static readonly DateTime Start = new DateTime(2000, 1, 1, 0, 0, 0);
 		private static readonly Random Random = new Random(0);
-		#endregion
 
-		#region Fields
-		protected Type ImplementationType;
+		protected static Type ImplementationType;
 		#endregion
 
 		#region Methods
@@ -126,7 +123,7 @@ namespace TankLevels.Tests.Infrastructure
 			}
 		}
 
-		protected ITank CreateTank(double minValue = DoubleMissing, double maxValue = DoubleMissing)
+		protected static ITank CreateTank(double minValue = DoubleMissing, double maxValue = DoubleMissing)
 		{
 			if (ImplementationType == null)
 			{
@@ -141,19 +138,18 @@ namespace TankLevels.Tests.Infrastructure
 					maxValue.Equals(DoubleMissing) ? Type.Missing : maxValue
 				});
 		}
-		#endregion
 
-		protected IEnumerable<TankLevel> MultiplyTankLevels(IEnumerable<TankLevel> tankLevels, int multiplyer)
+		protected static IEnumerable<TankLevel> MultiplyTankLevels(IEnumerable<TankLevel> tankLevels, int multiplyer)
 		{
 			return tankLevels.Select(tankLevel => MultiplyTankLevel(tankLevel, multiplyer));
 		}
 
-		private TankLevel MultiplyTankLevel(TankLevel tankLevel, int multiplyer)
+		private static TankLevel MultiplyTankLevel(TankLevel tankLevel, int multiplyer)
 		{
 			return new TankLevel(tankLevel.DateTime, tankLevel.Level*multiplyer);
 		}
 
-		protected void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, double minValue, double maxValue)
+		protected static void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, double minValue, double maxValue)
 		{
 			var tankLevelsArray = tankLevels.ToArray();
 
@@ -165,9 +161,15 @@ namespace TankLevels.Tests.Infrastructure
 			ActAndAssert(startTime, duration, -quantity, tankLevelsArray, expectedIsSuccess, expectedHour, tank);
 		}
 
-		private void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, ITank tank)
+		private static void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, ITank tank)
 		{
-			var result = tank.CheckOperation(startTime, duration, quantity, tankLevels);
+			var tla = tankLevels.ToArray();
+			var result = tank.CheckOperation(startTime, duration, quantity, tla);
+
+			// Test sabotage. Comment the next 2 lines out to check the test logic and data
+			// expectedIsSuccess = true; // Should make all expected false fail
+			// expectedHour = expectedHour + 0.000001; // Should make all expected true fail by slightly changed starttime
+
 			if (result.IsSuccess)
 			{
 				Assert.IsTrue(expectedIsSuccess);
@@ -177,8 +179,9 @@ namespace TankLevels.Tests.Infrastructure
 			}
 			else
 			{
-				Assert.IsFalse(result.IsSuccess);
+				Assert.IsFalse(expectedIsSuccess);
 			}
 		}
+		#endregion
 	}
 }

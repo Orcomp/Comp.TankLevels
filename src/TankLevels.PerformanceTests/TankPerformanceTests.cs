@@ -9,9 +9,9 @@
 namespace TankLevels.PerformanceTests
 {
 	#region using...
-	using global::NUnitBenchmarker;
 	using Infrastructure;
 	using NUnit.Framework;
+	using NUnitBenchmarker;
 
 	#endregion
 
@@ -28,7 +28,7 @@ namespace TankLevels.PerformanceTests
 		public void CheckOperation(TestConfiguration config)
 		{
 			config.IsReusable = false; // Default
-			config.Benchmark(config.TestName, config.Size, 3);
+			config.Benchmark(config.TestName, config.Size, 10);
 		}
 	}
 }
