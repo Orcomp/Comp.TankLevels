@@ -11,7 +11,6 @@ namespace TankLevels.Tests.TankInterface
 	#region using...
 	using System;
 	using System.Collections.Generic;
-	using System.Diagnostics;
 	using System.Linq;
 	using Demo;
 	using Entities;
@@ -52,14 +51,14 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(4.98, true, 5)]
 		[TestCase(4.99, true, 5)]
 		[TestCase(5, true, 5)]
-		[TestCase(5.01, true, 7.50999998297222)]
-		[TestCase(5.02, true, 7.52000000322222)]
-		[TestCase(5.03, true, 7.5300000235)]
-		[TestCase(5.04, true, 7.53999996922222)]
-		[TestCase(5.05, true, 7.54999998952778)]
-		[TestCase(5.1, true, 7.60000001633333)]
-		[TestCase(9.9, true, 12.3999999835556)]
-		[TestCase(10, true, 12.4999999627222)]
+		[TestCase(5.01, true, 7.51)]
+		[TestCase(5.02, true, 7.52)]
+		[TestCase(5.03, true, 7.53)]
+		[TestCase(5.04, true, 7.54)]
+		[TestCase(5.05, true, 7.55)]
+		[TestCase(5.1, true, 7.6)]
+		[TestCase(9.9, true, 12.4)]
+		[TestCase(10, true, 12.5)]
 		[TestCase(10.0000001, false, -1)]
 		public void CheckOperation_Constant(double quantity, bool expectedIsSuccess, double expectedHour)
 		{
@@ -109,19 +108,19 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(7.48, true, 5)]
 		[TestCase(7.49, true, 5)]
 		[TestCase(7.5, true, 5)]
-		[TestCase(7.51, true, 5.00999998297222)]
-		[TestCase(7.52, true, 5.02000000322222)]
-		[TestCase(7.53, true, 5.0300000235)]
-		[TestCase(7.54, true, 5.03999996922222)]
-		[TestCase(7.55, true, 5.04999998952778)]
-		[TestCase(7.6, true, 5.10000001633333)]
-		[TestCase(9.9, true, 7.39999998355556)]
-		[TestCase(9.95, true, 7.45000001036111)]
-		[TestCase(9.96, true, 7.46000003063889)]
-		[TestCase(9.97, true, 7.46999997638889)]
-		[TestCase(9.98, true, 7.47999999666667)]
-		[TestCase(9.99, true, 7.49000001691667)]
-		[TestCase(10, true, 7.49999996272222)]
+		[TestCase(7.51, true, 5.01)]
+		[TestCase(7.52, true, 5.02)]
+		[TestCase(7.53, true, 5.03)]
+		[TestCase(7.54, true, 5.04)]
+		[TestCase(7.55, true, 5.05)]
+		[TestCase(7.6, true, 5.1)]
+		[TestCase(9.9, true, 7.4)]
+		[TestCase(9.95, true, 7.45)]
+		[TestCase(9.96, true, 7.46)]
+		[TestCase(9.97, true, 7.47)]
+		[TestCase(9.98, true, 7.48)]
+		[TestCase(9.99, true, 7.49)]
+		[TestCase(10, true, 7.5)]
 		[TestCase(10.0000001, false, -1)]
 		public void CheckOperation_Decreasing(double quantity, bool expectedIsSuccess, double expectedHour)
 		{
@@ -183,12 +182,12 @@ namespace TankLevels.Tests.TankInterface
 		// Serie 0:  _/\_ with top of 10 and ground level 0
 		//        Se,St, D   Q, Min, Max 
 		[TestCase(0, 0, 2.5, 5, -15, 15, true, 0)]
-		[TestCase(0, 0, 2.5, 5.01, -15, 15, true, 2.50499997283333)]
-		[TestCase(0, 0, 2.5, 15, -15, 15, true, 7.49999996272222)]
+		[TestCase(0, 0, 2.5, 5.01, -15, 15, true, 2.505)]
+		[TestCase(0, 0, 2.5, 15, -15, 15, true, 7.5)]
 		[TestCase(0, 0, 2.5, 15.000001, -15, 15, false, -1)]
 		[TestCase(0, 5, 2.5, 10, -15, 15, true, 5)]
-		[TestCase(0, 5, 2.5, 10.1, -15, 15, true, 5.04999998952778)]
-		[TestCase(0, 5, 2.5, 15, -15, 15, true, 7.49999996272222)]
+		[TestCase(0, 5, 2.5, 10.1, -15, 15, true, 5.05)]
+		[TestCase(0, 5, 2.5, 15, -15, 15, true, 7.5)]
 		[TestCase(0, 5, 2.5, 15.00001, -15, 15, false, -1)]
 		[TestCase(0, 0, 6.0, 6, -15, 15, true, 0)]
 		[TestCase(0, 0, 6.0, 6.01, -15, 15, true, 0.0083195045)]
@@ -197,22 +196,23 @@ namespace TankLevels.Tests.TankInterface
 		//        Se,St, D   Q, Min, Max 
 		[TestCase(1, 0, 2.5, 0, -15, 15, true, 0)]
 		[TestCase(1, 0, 2.5, 5, -15, 15, true, 0)]
-		[TestCase(1, 0, 2.5, 5.01, -15, 15, true, 7.50499997283333)]
-		[TestCase(1, 0, 2.5, 5.02, -15, 15, true, 7.50999998297222)]
-		[TestCase(1, 0, 2.5, 5.03, -15, 15, true, 7.51499999308333)]
-		[TestCase(1, 0, 2.5, 5.04, -15, 15, true, 7.52000000322222)]
-		[TestCase(1, 0, 2.5, 5.05, -15, 15, true, 7.52500001336111)]
-		[TestCase(1, 0, 2.5, 15, -15, 15, true, 12.4999999627222)]
+		[TestCase(1, 0, 2.5, 5.01, -15, 15, true, 7.505)]
+		[TestCase(1, 0, 2.5, 5.02, -15, 15, true, 7.51)]
+		[TestCase(1, 0, 2.5, 5.03, -15, 15, true, 7.515)]
+		[TestCase(1, 0, 2.5, 5.04, -15, 15, true, 7.52)]
+		[TestCase(1, 0, 2.5, 5.05, -15, 15, true, 7.525)]
+		[TestCase(1, 0, 2.5, 15, -15, 15, true, 12.5)]
 		[TestCase(1, 0, 2.5, 15.0001, -15, 15, false, -1)]
 		[TestCase(1, 0, 6, 0, -15, 15, true, 0)]
 		[TestCase(1, 0, 6, 5, -15, 15, true, 0)]
-		[TestCase(1, 0, 6, 5.01, -15, 15, true, 4.01197601102778)]
-		[TestCase(1, 0, 6, 5.02, -15, 15, true, 4.02390439058333)]
-		[TestCase(1, 0, 6, 5.03, -15, 15, true, 4.03578530994444)]
-		[TestCase(1, 0, 6, 5.04, -15, 15, true, 4.04761906705556)]
-		[TestCase(1, 0, 6, 5.05, -15, 15, true, 4.05940596008333)]
-		[TestCase(1, 0, 6, 15, -15, 15, true, 9.00000002227778)]
+		[TestCase(1, 0, 6, 5.01, -15, 15, true, 4.01197601102778)] // endless 
+		[TestCase(1, 0, 6, 5.02, -15, 15, true, 4.02390439058333)] // endless 
+		[TestCase(1, 0, 6, 5.03, -15, 15, true, 4.03578530994444)] // endless 
+		[TestCase(1, 0, 6, 5.04, -15, 15, true, 4.04761906705556)] // endless 
+		[TestCase(1, 0, 6, 5.05, -15, 15, true, 4.05940596008333)] // endless 
+		[TestCase(1, 0, 6, 15, -15, 15, true, 9.0)]
 		[TestCase(1, 0, 2.5, 15.0001, -15, 15, false, -1)]
+
 
 		// Serie 2: -\/-  with top of 10 and bottom of 0
 		//        Se,St, D   Q, Min, Max 
@@ -274,27 +274,27 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(7, 0, 0.5, 0, -10, 10, true, 0)]
 		[TestCase(7, 0, 0.5, 4.5, -10, 10, true, 0)]
 		[TestCase(7, 0, 0.5, 5, -10, 10, true, 0)]
-		[TestCase(7, 0, 0.5, 5.5, -10, 10, true, 0.545454531833333)]
-		[TestCase(7, 0, 0.5, 6, -10, 10, true, 0.583333343194444)]
-		[TestCase(7, 0, 0.5, 6.5, -10, 10, true, 1.53846153611111)]
-		[TestCase(7, 0, 0.5, 7, -10, 10, true, 1.57142856711111)]
-		[TestCase(7, 0, 0.5, 7.5, -10, 10, true, 2.53333333130556)]
-		[TestCase(7, 0, 0.5, 8, -10, 10, true, 2.56249997019444)]
-		[TestCase(7, 0, 0.5, 8.5, -10, 10, true, 3.52941176291667)]
-		[TestCase(7, 0, 0.5, 9, -10, 10, true, 3.55555555219444)]
-		[TestCase(7, 0, 0.5, 9.5, -10, 10, true, 4.52631577844444)]
-		[TestCase(7, 0, 0.5, 10, -10, 10, true, 4.54999998205556)]
+		[TestCase(7, 0, 0.5, 5.5, -10, 10, true, 0.545454531833333)] // endless 
+		[TestCase(7, 0, 0.5, 6, -10, 10, true, 0.583333343194444)] // endless 
+		[TestCase(7, 0, 0.5, 6.5, -10, 10, true, 1.53846153611111)] // endless 
+		[TestCase(7, 0, 0.5, 7, -10, 10, true, 1.57142856711111)] // endless 
+		[TestCase(7, 0, 0.5, 7.5, -10, 10, true, 2.53333333130556)] // endless 
+		[TestCase(7, 0, 0.5, 8, -10, 10, true, 2.56249997019444)] // endless 
+		[TestCase(7, 0, 0.5, 8.5, -10, 10, true, 3.52941176291667)] // endless 
+		[TestCase(7, 0, 0.5, 9, -10, 10, true, 3.55555555219444)] // endless 
+		[TestCase(7, 0, 0.5, 9.5, -10, 10, true, 4.52631577844444)] // endless 
+		[TestCase(7, 0, 0.5, 10, -10, 10, true, 4.54999998205556)] // endless 
 		[TestCase(7, 0, 0.5, 10.00001, -10, 10, false, -1)]
 		[TestCase(7, 0, 1, 0, -10, 10, true, 0)]
 		[TestCase(7, 0, 1, 5, -10, 10, true, 0)]
-		[TestCase(7, 0, 1, 5.5, -10, 10, true, 0.0909090935555556)]
-		[TestCase(7, 0, 1, 6, -10, 10, true, 0.166666656666667)]
-		[TestCase(7, 0, 1, 6.5, -10, 10, true, 1.07692310208333)]
-		[TestCase(7, 0, 1, 7, -10, 10, true, 1.14285716408333)]
-		[TestCase(7, 0, 1, 7.5, -10, 10, true, 2.06666669244444)]
-		[TestCase(7, 0, 1, 8, -10, 10, true, 2.12499997019444)]
-		[TestCase(7, 0, 1, 8.5, -10, 10, true, 3.05882355566667)]
-		[TestCase(7, 0, 1, 9, -10, 10, true, 3.11111113425)]
+		[TestCase(7, 0, 1, 5.5, -10, 10, true, 0.0909090935555556)] // endless 
+		[TestCase(7, 0, 1, 6, -10, 10, true, 0.166666656666667)] // endless 
+		[TestCase(7, 0, 1, 6.5, -10, 10, true, 1.07692310208333)] // endless 
+		[TestCase(7, 0, 1, 7, -10, 10, true, 1.14285716408333)] // endless 
+		[TestCase(7, 0, 1, 7.5, -10, 10, true, 2.06666669244444)] // endless 
+		[TestCase(7, 0, 1, 8, -10, 10, true, 2.12499997019444)] // endless 
+		[TestCase(7, 0, 1, 8.5, -10, 10, true, 3.05882355566667)] // endless 
+		[TestCase(7, 0, 1, 9, -10, 10, true, 3.11111113425)] 
 		[TestCase(7, 0, 1, 9.5, -10, 10, true, 4.05263158675)]
 		[TestCase(7, 0, 1, 10, -10, 10, true, 4.09999999397222)]
 		[TestCase(7, 0, 1, 10.00001, -10, 10, false, -1)]
@@ -429,19 +429,19 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(2.5, true, 0)]
 		[TestCase(5, true, 0)]
 		[TestCase(5.0000000001, true, 2.5)]
-		[TestCase(5.001, true, 2.50099997961111)]
-		[TestCase(5.002, true, 2.50199999652778)]
-		[TestCase(5.003, true, 2.50300001347222)]
-		[TestCase(5.004, true, 2.50400003038889)]
-		[TestCase(5.005, true, 2.50499997283333)]
-		[TestCase(5.1, true, 2.60000001633333)]
-		[TestCase(9.9, true, 7.39999998355556)]
-		[TestCase(9.95, true, 7.45000001036111)]
-		[TestCase(9.96, true, 7.46000003063889)]
-		[TestCase(9.97, true, 7.46999997638889)]
-		[TestCase(9.98, true, 7.47999999666667)]
-		[TestCase(9.99, true, 7.49000001691667)]
-		[TestCase(10, true, 7.49999996272222)]
+		[TestCase(5.001, true, 2.501)]
+		[TestCase(5.002, true, 2.502)]
+		[TestCase(5.003, true, 2.5030000)]
+		[TestCase(5.004, true, 2.5040000)]
+		[TestCase(5.005, true, 2.505)]
+		[TestCase(5.1, true, 2.6000000)]
+		[TestCase(9.9, true, 7.4)]
+		[TestCase(9.95, true, 7.45)]
+		[TestCase(9.96, true, 7.46)]
+		[TestCase(9.97, true, 7.47)]
+		[TestCase(9.98, true, 7.48)]
+		[TestCase(9.99, true, 7.49)]
+		[TestCase(10, true, 7.5)]
 		[TestCase(10.000001, false, -1)]
 		public void CheckOperation_Increasing(double quantity, bool expectedIsSuccess, double expectedHour)
 		{
@@ -488,11 +488,11 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(7.48, true, 5)]
 		[TestCase(7.49, true, 5)]
 		[TestCase(7.5, true, 5)]
-		[TestCase(7.51, true, 5.00999998297222)]
-		[TestCase(7.52, true, 5.02000000322222)]
-		[TestCase(7.53, true, 5.0300000235)]
-		[TestCase(7.54, true, 5.03999996922222)]
-		[TestCase(7.55, true, 5.04999998952778)]
+		[TestCase(7.51, true, 5.01)]
+		[TestCase(7.52, true, 5.02)]
+		[TestCase(7.53, true, 5.03)]
+		[TestCase(7.54, true, 5.04)]
+		[TestCase(7.55, true, 5.05)]
 		[TestCase(7.60, true, 5.1)]
 		[TestCase(9.9, true, 7.4)]
 		[TestCase(10, true, 7.5)]
@@ -503,7 +503,7 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(109.97, true, 9.77266523980555)]
 		[TestCase(109.98, true, 9.77268595241667)]
 		[TestCase(109.99, true, 9.7727065905)]
-		[TestCase(110, true, 9.77272727272222)]
+		[TestCase(110, true, 9.77272727272727)]
 		[TestCase(110.0000001, false, -1)]
 		public void CheckOperation_NoZeroTimeChangeInLevels_Decreasing(double quantity, bool expectedIsSuccess, double expectedHour)
 		{
@@ -552,14 +552,14 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(7.48, true, 5)]
 		[TestCase(7.49, true, 5)]
 		[TestCase(7.5, true, 5)]
-		[TestCase(7.51, true, 5.00999998297222)]
-		[TestCase(7.52, true, 5.02000000322222)]
-		[TestCase(7.53, true, 5.0300000235)]
-		[TestCase(7.54, true, 5.03999996922222)]
-		[TestCase(7.55, true, 5.04999998952778)]
+		[TestCase(7.51, true, 5.01)]
+		[TestCase(7.52, true, 5.02)]
+		[TestCase(7.53, true, 5.03)]
+		[TestCase(7.54, true, 5.04)]
+		[TestCase(7.55, true, 5.05)]
 		[TestCase(7.60, true, 5.1)]
 		[TestCase(9.9, true, 7.4)]
-		[TestCase(10, true, 7.49999999997222)]
+		[TestCase(10, true, 7.5)]
 		[TestCase(10.1, true, 7.52475247522222)]
 		[TestCase(109.9, true, 9.77252047313889)]
 		[TestCase(109.95, true, 9.77262388908333)]
@@ -567,7 +567,7 @@ namespace TankLevels.Tests.TankInterface
 		[TestCase(109.97, true, 9.77266523980555)]
 		[TestCase(109.98, true, 9.77268595241667)]
 		[TestCase(109.99, true, 9.7727065905)]
-		[TestCase(110, true, 9.77272727269444)]
+		[TestCase(110, true, 9.7727272727272)]
 		[TestCase(110.00000001, false, -1)]
 		public void CheckOperation_ZeroTimeChangeInLevels(double quantity, bool expectedIsSuccess, double expectedHour)
 		{
