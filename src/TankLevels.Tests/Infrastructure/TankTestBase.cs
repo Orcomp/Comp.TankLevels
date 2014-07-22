@@ -12,7 +12,11 @@ namespace TankLevels.Tests.Infrastructure
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
+	using System.IO;
 	using System.Linq;
+	using System.Runtime.Serialization.Json;
+	using System.Text;
+	using System.Xml;
 	using Demo;
 	using Entities;
 	using NUnit.Framework;
@@ -166,6 +170,7 @@ namespace TankLevels.Tests.Infrastructure
 			var tla = tankLevels.ToArray();
 			var result = tank.CheckOperation(startTime, duration, quantity, tla);
 
+
 			// Test sabotage. Comment the next 2 lines out to check the test logic and data
 			// expectedIsSuccess = true; // Should make all expected false fail
 			// expectedHour = expectedHour + 0.000001; // Should make all expected true fail by slightly changed starttime
@@ -180,8 +185,33 @@ namespace TankLevels.Tests.Infrastructure
 			else
 			{
 				Assert.IsFalse(expectedIsSuccess);
+				Assert.AreEqual(result.StartTime, default(DateTime));
 			}
 			
+		}
+
+		protected TankLevel[] CreateTankLevels(string tankLevelsText)
+		{
+			// Time1->Value1; Time2->Value2
+			TankLevel[] result = null;
+			try
+			{
+				var pairs = tankLevelsText.Split(';');
+				result = new TankLevel[pairs.Length];
+				for (int index = 0; index < pairs.Length; index++)
+				{
+					var pair = pairs[index];
+					var numbers = pair.Split(new[] {"->"}, StringSplitOptions.None);
+					var time = double.Parse(numbers[0].Trim());
+					var level = double.Parse(numbers[1].Trim());
+					result[index] = new TankLevel(Time(time), level);
+				}
+			}
+			catch (Exception)
+			{
+				Assert.Fail("Invalid tank levels test data: {0}", tankLevelsText);
+			}
+			return result;
 		}
 
 		#endregion
