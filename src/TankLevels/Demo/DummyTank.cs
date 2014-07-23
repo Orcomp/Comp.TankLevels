@@ -6,14 +6,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
-#region Copyright (c) 2014 Orcomp development team.
-// -------------------------------------------------------------------------------------------------------------------
-// <copyright file="DummyTank.cs" company="Orcomp development team">
-//   Copyright (c) 2014 Orcomp development team. All rights reserved.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-#endregion
-
 namespace TankLevels.Demo
 {
 	#region using...
