@@ -12,14 +12,11 @@ namespace TankLevels.Tests.Infrastructure
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
-	using System.IO;
 	using System.Linq;
-	using System.Runtime.Serialization.Json;
-	using System.Text;
-	using System.Xml;
 	using Demo;
 	using Entities;
 	using NUnit.Framework;
+	
 
 	#endregion
 
@@ -170,7 +167,6 @@ namespace TankLevels.Tests.Infrastructure
 			var tla = tankLevels.ToArray();
 			var result = tank.CheckOperation(startTime, duration, quantity, tla);
 
-
 			// Test sabotage. Comment the next 2 lines out to check the test logic and data
 			// expectedIsSuccess = true; // Should make all expected false fail
 			// expectedHour = expectedHour + 0.000001; // Should make all expected true fail by slightly changed starttime
@@ -185,7 +181,6 @@ namespace TankLevels.Tests.Infrastructure
 			else
 			{
 				Assert.IsFalse(expectedIsSuccess);
-				Assert.AreEqual(result.StartTime, default(DateTime));
 			}
 			
 		}
@@ -198,7 +193,7 @@ namespace TankLevels.Tests.Infrastructure
 			{
 				var pairs = tankLevelsText.Split(';');
 				result = new TankLevel[pairs.Length];
-				for (int index = 0; index < pairs.Length; index++)
+				for (var index = 0; index < pairs.Length; index++)
 				{
 					var pair = pairs[index];
 					var numbers = pair.Split(new[] {"->"}, StringSplitOptions.None);
@@ -213,7 +208,6 @@ namespace TankLevels.Tests.Infrastructure
 			}
 			return result;
 		}
-
 		#endregion
 	}
 }

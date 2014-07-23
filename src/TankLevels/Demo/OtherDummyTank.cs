@@ -48,7 +48,7 @@ namespace TankLevels.Demo
 		{
 			// This dummy code. You can safely delete it and write something real instead.
 			Thread.Sleep(tankLevels.Count()/200);
-			return new CheckOperationResult(startTime.Second % 2 == 0, startTime.AddSeconds(1000));
+			return new CheckOperationResult(startTime.Second%2 == 0, startTime.AddSeconds(1000));
 		}
 
 		/// <summary>
