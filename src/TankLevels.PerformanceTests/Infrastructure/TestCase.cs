@@ -10,8 +10,8 @@ namespace TankLevels.PerformanceTests.Infrastructure
 {
 	internal enum TestCase
 	{
-		EmptyTankWithNoMaxMin = 0,
-		RandomTankWithNoMaxMin = 1,
-		RandomTankWithMaxMin = 2,
+		EmptyTank = 0,
+		TankWithNoMaxMin = 1,
+		TankWithMaxMin = 2,
 	}
 }

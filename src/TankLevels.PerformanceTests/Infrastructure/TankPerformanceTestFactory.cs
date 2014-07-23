@@ -17,29 +17,34 @@ namespace TankLevels.PerformanceTests.Infrastructure
 	using Entities;
 	using NUnitBenchmarker;
 	using NUnitBenchmarker.Configuration;
-	
 	using Tests.Infrastructure;
 
 	#endregion
 
 	public class TankPerformanceTestFactory : TankTestBase
 	{
+		
+
 		#region Constants
 		private const int IterationCount = 100;
+
+		private const double TankMinValue = -100;
+		private const double TankMaxValue = 100;
 		private const double TankStartHour = 0;
 		private const double TankEndHour = 168;
+
+		private const double ParameterMinQuantity = -120;
+		private const double ParameterMaxQuantity = 120;
 		private const double ParameterStartHour = -10;
 		private const double ParameterEndHour = 168 + 10;
 		private const double ParameterDurationMin = 0.0;
-		private const double ParameterDurationMax = 72.0;
+		private const double ParameterDurationMax = 36.0;
 		#endregion
 
 		#region Properties
 		private IEnumerable<Type> ImplementationTypes
 		{
 			get { return new[] {typeof (DummyTank), typeof (OtherDummyTank)}; }
-			//get { return new[] {typeof (DummyTank) }; }
-
 		}
 
 		private static string[] TestCaseNames
@@ -48,9 +53,9 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			{
 				return new[]
 				{
-					"Empty Tank with no max/min",
-					"Random Tank with no max/min",
-					"Random Tank with max/min"
+					"Empty Tank",
+					"Tank with no max/min",
+					"Tank with max/min"
 				};
 			}
 		}
@@ -61,9 +66,9 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			{
 				return new[]
 				{
-					//TestCase.EmptyTankWithNoMaxMin,
-					//TestCase.RandomTankWithNoMaxMin,
-					TestCase.RandomTankWithMaxMin
+					//TestCase.EmptyTank,
+					//TestCase.TankWithNoMaxMin,
+					TestCase.TankWithMaxMin
 				};
 			}
 		}
@@ -98,7 +103,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 					       var result = config.Tank.CheckOperation(p.StartTime, p.Duration, p.Quantity, config.TankLevels);
 					       var dummy = result.IsSuccess ? trueCount++ : falseCount++;
 				       }
-					   //Debug.WriteLine(string.Format("True: {0}, False: {1}", trueCount, falseCount));
+					   Debug.WriteLine("True: {0}, False: {1}", trueCount, falseCount);
 			       })
 			       select new TestConfiguration
 			       {
@@ -116,8 +121,8 @@ namespace TankLevels.PerformanceTests.Infrastructure
 		{
 			double minValue;
 			double maxValue;
-
-			if (testCase == TestCase.EmptyTankWithNoMaxMin)
+			 
+			if (testCase == TestCase.EmptyTank)
 			{
 				return new List<TankLevel>();
 			}
@@ -125,31 +130,31 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			GetMinMax(testCase, out minValue, out maxValue);
 
 			var result = new TankLevel[size];
+			var tickStep = (Time(TankEndHour) - Time(TankStartHour)).Ticks/size + 1;
+			var levelStep = maxValue/(2*size);
+
+			var dateTime = Time(TankStartHour);
+			var level = maxValue/2;
 			for (var index = 0; index < result.Length; index++)
 			{
-				var startDate = GetRandomDateTime(Time(TankStartHour), Time(TankEndHour));
-				var level = GetRandomDouble(minValue, maxValue);
-				result[index] = new TankLevel(startDate, level);
+				result[index] = new TankLevel(dateTime, level);
+				dateTime = dateTime.AddTicks(tickStep);
+				level -= levelStep;
+				level = -level;
+				levelStep = -levelStep;
 			}
 			return result;
 		}
 
 		private CheckOperationParameter[] CreateParameters(TestCase testCase)
 		{
-			double minValue;
-			double maxValue;
-
-			GetMinMax(testCase, out minValue, out maxValue);
-			// TODO: Tune for true/false ratio
-			var minQuantity = minValue/2.0;
-			var maxQuantity = maxValue/2.0;
 
 			var result = new CheckOperationParameter[IterationCount];
 			for (var index = 0; index < result.Length; index++)
 			{
 				var startDate = GetRandomDateTime(Time(ParameterStartHour), Time(ParameterEndHour));
 				var duration = Duration(GetRandomDouble(ParameterDurationMin, ParameterDurationMax));
-				var quantity = GetRandomDouble(minQuantity, maxQuantity);
+				var quantity = GetRandomDouble(ParameterMinQuantity, ParameterMaxQuantity);
 				result[index] = new CheckOperationParameter(startDate, duration, quantity);
 			}
 			return result;
@@ -160,6 +165,8 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			double minValue;
 			double maxValue;
 			GetMinMax(testCase, out minValue, out maxValue);
+
+			// This is for TankTestBase.CreateTank:
 			ImplementationType = type;
 			return CreateTank(minValue, maxValue);
 		}
@@ -168,14 +175,14 @@ namespace TankLevels.PerformanceTests.Infrastructure
 		{
 			switch (testCase)
 			{
-				case TestCase.EmptyTankWithNoMaxMin:
-				case TestCase.RandomTankWithNoMaxMin:
+				case TestCase.EmptyTank:
+				case TestCase.TankWithNoMaxMin:
 					minValue = double.MinValue;
 					maxValue = double.MaxValue;
 					break;
-				case TestCase.RandomTankWithMaxMin:
-					minValue = -100.0;
-					maxValue = 100.0;
+				case TestCase.TankWithMaxMin:
+					minValue = TankMinValue;
+					maxValue = TankMaxValue;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException("testCase");

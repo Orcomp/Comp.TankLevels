@@ -27,7 +27,6 @@ namespace TankLevels.PerformanceTests
 		[Test, TestCaseSource(typeof (TankPerformanceTestFactory), "CheckOperationTestCases")]
 		public void CheckOperation(TestConfiguration config)
 		{
-			config.IsReusable = false; // Default
 			config.Benchmark(config.TestName, config.Size, 10);
 		}
 	}
