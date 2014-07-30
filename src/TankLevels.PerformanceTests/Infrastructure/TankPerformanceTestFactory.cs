@@ -43,6 +43,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 		#region Properties
 		private IEnumerable<Type> ImplementationTypes
 		{
+			// TODO: Remove the dummy implementations and add your own here
 			get { return new[] {typeof (DummyTank), typeof (OtherDummyTank)}; }
 		}
 
