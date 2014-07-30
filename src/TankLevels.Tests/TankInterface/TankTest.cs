@@ -907,5 +907,65 @@ namespace TankLevels.Tests.TankInterface
 
 			ActAndAssert(Time(startTime), Duration(duration), quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
 		}
+
+
+		[Test]
+		public void ZigZag1_Expected_True_Size()
+		{
+			const int size = 10;
+			
+			var tankLevels = new TankLevel[size+1];
+			var dateTime = Time(0);
+			for (var index = 0; index < size; index++)
+			{
+				var level = index % 2 == 0 ? index / 2 : (index / 2) + 2;
+				tankLevels[index] = new TankLevel(dateTime, level);
+				dateTime = dateTime.AddHours(1);
+			}
+			tankLevels[size] = new TankLevel(dateTime.AddHours(1), size / 2 - 1); // yes, AddHours(_1_)
+
+
+			const int limit = size/2 + 1;
+			var startTime = Time(0);
+			var duration = Duration(1);
+			//var duration = Duration(0);
+			const double quantity = 1;
+			const int minValue = -limit;
+			const int maxValue = limit;
+			const bool expectedIsSuccess = true;
+			const double expectedHour = size - 1;
+			//const double expectedHour = size;
+
+			ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
+		}
+
+		[Test]
+		public void ZigZag2_Expected_True_Size()
+		{
+			const int size = 10;
+
+			var tankLevels = new TankLevel[size + 2];
+			var dateTime = Time(0);
+			for (var index = 0; index < size; index++)
+			{
+				var level = index % 2 == 0 ? 0 : 10;
+				tankLevels[index] = new TankLevel(dateTime, level);
+				dateTime = dateTime.AddHours(1);
+			}
+			tankLevels[size] = new TankLevel(dateTime, 0);
+			tankLevels[size + 1] = new TankLevel(dateTime, 9); 
+
+			var startTime = Time(0);
+			var duration = Duration(1);
+			//var duration = Duration(0);
+			const double quantity = 1;
+			const int minValue = -10;
+			const int maxValue = 10;
+			const bool expectedIsSuccess = true;
+			//const double expectedHour = size - 0.9;
+			const double expectedHour = size - 1;
+
+			ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
+		}
 	}
 }

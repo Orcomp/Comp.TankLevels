@@ -24,8 +24,14 @@ namespace TankLevels.PerformanceTests
 			Benchmarker.Init();
 		}
 
-		[Test, TestCaseSource(typeof (TankPerformanceTestFactory), "CheckOperationTestCases")]
-		public void CheckOperation(TestConfiguration config)
+		[Test, TestCaseSource(typeof (TankPerformanceTestFactory), "CheckOperationSpecialTestCases")]
+		public void CheckOperationSpecial(TestConfiguration config)
+		{
+			config.Benchmark(config.TestName, config.Size, 10);
+		}
+
+		[Test, TestCaseSource(typeof(TankPerformanceTestFactory), "CheckOperationRandomTestCases")]
+		public void CheckOperationRandom(TestConfiguration config)
 		{
 			config.Benchmark(config.TestName, config.Size, 10);
 		}
