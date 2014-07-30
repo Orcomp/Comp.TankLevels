@@ -43,8 +43,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 		#region Properties
 		private IEnumerable<Type> ImplementationTypes
 		{
-			//get { return new[] {typeof (DummyTank), typeof (OtherDummyTank)}; }
-			get { return new[] {typeof (DummyTank)}; }
+			get { return new[] {typeof (DummyTank), typeof (OtherDummyTank)}; }
 		}
 
 		private static string[] TestCaseNames
@@ -123,7 +122,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			       {
 				       var config = (TestConfiguration) i;
 				       var trueCount = 0;
-				       var falseCount = 0;
+					   var falseCount = 0;
 				       if (config.Parameters.Length == 0)
 				       {
 					       Thread.Sleep(config.Size/10);
@@ -137,7 +136,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 					       //Debug.WriteLine((result.StartTime - Time(0)).TotalHours);
 					       var dummy = result.IsSuccess ? trueCount++ : falseCount++;
 				       }
-				       Debug.WriteLine("True: {0}, False: {1}", trueCount, falseCount);
+					   Debug.WriteLine("True: {0}, False: {1}", trueCount, falseCount);
 			       })
 			       select new TestConfiguration
 			       {
@@ -156,33 +155,33 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			double minLimit;
 			double maxLimit;
 			TankLevel[] result;
-
+			 
 			GetMinMax(size, testCase, out minLimit, out maxLimit);
 			DateTime dateTime;
 			switch (testCase)
 			{
 				case TestCase.EmptyTank:
-					return new List<TankLevel>();
+				return new List<TankLevel>();
 					break;
-				
+
 				case TestCase.RandomTank:
 				{
 					result = new TankLevel[size];
-					var tickStep = (Time(TankEndHour) - Time(TankStartHour)).Ticks/size + 1;
+			var tickStep = (Time(TankEndHour) - Time(TankStartHour)).Ticks/size + 1;
 					var levelStep = maxLimit/(2*size);
 
 					dateTime = Time(TankStartHour);
 					var level = maxLimit/2;
-					for (var index = 0; index < result.Length; index++)
-					{
-						result[index] = new TankLevel(dateTime, level);
-						dateTime = dateTime.AddTicks(tickStep);
-						level -= levelStep;
-						level = -level;
-						levelStep = -levelStep;
-					}
-					return result;
-				}
+			for (var index = 0; index < result.Length; index++)
+			{
+				result[index] = new TankLevel(dateTime, level);
+				dateTime = dateTime.AddTicks(tickStep);
+				level -= levelStep;
+				level = -level;
+				levelStep = -levelStep;
+			}
+			return result;
+		}
 				case TestCase.ZiZag1:
 				{
 					result = new TankLevel[size + 1];
@@ -232,14 +231,14 @@ namespace TankLevels.PerformanceTests.Infrastructure
 				case TestCase.EmptyTank:
 				case TestCase.RandomTank:
 					result = new CheckOperationParameter[IterationCount];
-					for (var index = 0; index < result.Length; index++)
-					{
-						var startDate = GetRandomDateTime(Time(ParameterStartHour), Time(ParameterEndHour));
-						var duration = Duration(GetRandomDouble(ParameterDurationMin, ParameterDurationMax));
-						var quantity = GetRandomDouble(ParameterMinQuantity, ParameterMaxQuantity);
-						result[index] = new CheckOperationParameter(startDate, duration, quantity);
-					}
-					return result;
+			for (var index = 0; index < result.Length; index++)
+			{
+				var startDate = GetRandomDateTime(Time(ParameterStartHour), Time(ParameterEndHour));
+				var duration = Duration(GetRandomDouble(ParameterDurationMin, ParameterDurationMax));
+				var quantity = GetRandomDouble(ParameterMinQuantity, ParameterMaxQuantity);
+				result[index] = new CheckOperationParameter(startDate, duration, quantity);
+			}
+			return result;
 				case TestCase.ZiZag1:
 					result = new CheckOperationParameter[1];
 					result[0] = new CheckOperationParameter(Time(0), Duration(1), 1.0);
@@ -256,7 +255,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 					return new CheckOperationParameter[0];
 				default:
 					throw new ArgumentOutOfRangeException("testCase");
-			}
+		}
 		}
 
 		private ITank CreateTank(int size, TestCase testCase, Type type)
