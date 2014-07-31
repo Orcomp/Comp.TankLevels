@@ -30,7 +30,7 @@ namespace TankLevels.PerformanceTests
 			config.Benchmark(config.TestName, config.Size, 10);
 		}
 
-		[Test, TestCaseSource(typeof(TankPerformanceTestFactory), "CheckOperationRandomTestCases")]
+		[Test, TestCaseSource(typeof (TankPerformanceTestFactory), "CheckOperationRandomTestCases")]
 		public void CheckOperationRandom(TestConfiguration config)
 		{
 			config.Benchmark(config.TestName, config.Size, 10);

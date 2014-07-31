@@ -14,7 +14,13 @@ namespace TankLevels.PerformanceTests.Infrastructure
 		RandomTank = 1,
 		ZiZag1 = 2,
 		ZiZag2 = 3,
-		OneInterval = 4,
-		Calibration = 5
+		ZiZag150 = 4,
+		ZiZag250 = 5,
+		ZiZag175 = 6,
+		ZiZag275 = 7,
+		ZiZag190 = 8,
+		ZiZag290 = 9,
+		OneInterval = 10,
+		Calibration = 11
 	}
 }

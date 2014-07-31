@@ -17,6 +17,7 @@ namespace TankLevels.Tests.Infrastructure
 	using Entities;
 	using NUnit.Framework;
 
+
 	#endregion
 
 	/// <summary>
@@ -164,6 +165,7 @@ namespace TankLevels.Tests.Infrastructure
 		private static void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, ITank tank)
 		{
 			var tla = tankLevels.ToArray();
+
 			var result = tank.CheckOperation(startTime, duration, quantity, tla);
 
 			// Test sabotage. Comment the next 2 lines out to check the test logic and data
@@ -181,7 +183,6 @@ namespace TankLevels.Tests.Infrastructure
 			{
 				Assert.IsFalse(expectedIsSuccess);
 			}
-			
 		}
 
 		protected TankLevel[] CreateTankLevels(string tankLevelsText)

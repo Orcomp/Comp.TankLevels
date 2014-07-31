@@ -908,62 +908,58 @@ namespace TankLevels.Tests.TankInterface
 			ActAndAssert(Time(startTime), Duration(duration), quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
 		}
 
-
 		[Test]
-		public void ZigZag1_Expected_True_Size()
+		[Combinatorial]
+		public void ZigZag1_Expected_True_Size_Minus_1([Values(10, 100, 1000)] int size, [Values(0, 0.5, 0.75, 0.9)] double startPercent)
 		{
-			const int size = 10;
-			
-			var tankLevels = new TankLevel[size+1];
+			// With value 10 produces Ben's original ZizZag 1
+
+			var tankLevels = new TankLevel[size + 1];
 			var dateTime = Time(0);
 			for (var index = 0; index < size; index++)
 			{
-				var level = index % 2 == 0 ? index / 2 : (index / 2) + 2;
+				var level = index%2 == 0 ? index/2 : (index/2) + 2;
 				tankLevels[index] = new TankLevel(dateTime, level);
 				dateTime = dateTime.AddHours(1);
 			}
-			tankLevels[size] = new TankLevel(dateTime.AddHours(1), size / 2 - 1); // yes, AddHours(_1_)
+			tankLevels[size] = new TankLevel(dateTime.AddHours(1), size/2 - 1); // yes, AddHours(_1_)
 
-
-			const int limit = size/2 + 1;
-			var startTime = Time(0);
+			var limit = size/2 + 1;
+			var startTime = Time(size*startPercent);
 			var duration = Duration(1);
-			//var duration = Duration(0);
 			const double quantity = 1;
-			const int minValue = -limit;
-			const int maxValue = limit;
+			var minValue = -limit;
+			var maxValue = limit;
 			const bool expectedIsSuccess = true;
-			const double expectedHour = size - 1;
-			//const double expectedHour = size;
+			double expectedHour = size - 1;
 
 			ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
 		}
 
 		[Test]
-		public void ZigZag2_Expected_True_Size()
+		[Combinatorial]
+		public void ZigZag2_Expected_True_Size_Minus_1([Values(10, 100, 1000)] int size, [Values(0, 0.5, 0.75, 0.9)] double startPercent)
 		{
-			const int size = 10;
+			// With value size = 10, startPercent = 0 produces Ben's original ZizZag 2
 
 			var tankLevels = new TankLevel[size + 2];
 			var dateTime = Time(0);
 			for (var index = 0; index < size; index++)
 			{
-				var level = index % 2 == 0 ? 0 : 10;
+				var level = index%2 == 0 ? 0 : 10;
 				tankLevels[index] = new TankLevel(dateTime, level);
 				dateTime = dateTime.AddHours(1);
 			}
 			tankLevels[size] = new TankLevel(dateTime, 0);
-			tankLevels[size + 1] = new TankLevel(dateTime, 9); 
+			tankLevels[size + 1] = new TankLevel(dateTime.AddHours(1), 9);
 
-			var startTime = Time(0);
+			var startTime = Time(size*startPercent);
 			var duration = Duration(1);
-			//var duration = Duration(0);
 			const double quantity = 1;
 			const int minValue = -10;
 			const int maxValue = 10;
 			const bool expectedIsSuccess = true;
-			//const double expectedHour = size - 0.9;
-			const double expectedHour = size - 1;
+			double expectedHour = size - 1;
 
 			ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
 		}

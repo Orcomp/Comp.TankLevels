@@ -21,7 +21,7 @@ namespace TankLevels.Tests.Implementations
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
-            // TODO: Replace DummyTank with your own implementation
+			// TODO: Replace DummyTank with your own implementation
 			ImplementationType = typeof (DummyTank);
 		}
 	}

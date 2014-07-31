@@ -24,7 +24,7 @@ namespace TankLevels.Entities
 		/// </summary>
 		/// <param name="dateTime">The point of time where to define the level.</param>
 		/// <param name="level">The level at the given point of time.</param>
-		public TankLevel(DateTime dateTime, double level) : this()
+		public TankLevel(DateTime dateTime, double level) : this() 
 		{
 			DateTime = dateTime;
 			Level = level;
