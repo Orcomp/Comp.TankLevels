@@ -16,8 +16,7 @@ namespace TankLevels.Tests.Infrastructure
 	using Demo;
 	using Entities;
 	using NUnit.Framework;
-
-
+	
 	#endregion
 
 	/// <summary>

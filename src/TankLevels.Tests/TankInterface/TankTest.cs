@@ -345,6 +345,49 @@ namespace TankLevels.Tests.TankInterface
 		}
 
 		[Test]
+		public void CheckOperation_StartTimeAfterLastTankData_Expected_False()
+		{
+			#region Timeline
+			// |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+			// 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+			// Levels:
+			//                              0.0  1.0  2.0  
+			// |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+			// 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+			//
+			// Check for:
+			//                                              2
+			//                                          |---------| starts _after_ 8
+			// |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+			// 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+			//
+			// Expected Result:
+			// IsSuccess = false
+			// StartTime = N/A (default(DateTime))
+			// Note: We cannot end after the last data point in the tank
+			//
+			// |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+			// 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+			#endregion
+
+			var tankLevels = new List<TankLevel>
+			{
+				new TankLevel(Time(6), 0),
+				new TankLevel(Time(8), 2),
+			};
+
+			var startTime = Time(8).AddTicks(1);
+			var duration = Duration(2);
+			const double quantity = 2;
+			const int minValue = -10;
+			const int maxValue = 10;
+			const bool expectedIsSuccess = false;
+			const double expectedHour = -1; // N/A if IsSuccess is false. StartTime will be checked against default(DateTime)
+
+			ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
+		}
+
+		[Test]
 		[TestCase(0, false, -1)]
 		[TestCase(5, false, -1)]
 		[TestCase(100000, false, -1)]
@@ -963,5 +1006,7 @@ namespace TankLevels.Tests.TankInterface
 
 			ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
 		}
+
+
 	}
 }
