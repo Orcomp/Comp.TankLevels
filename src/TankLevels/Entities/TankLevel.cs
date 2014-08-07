@@ -36,13 +36,13 @@ namespace TankLevels.Entities
 		/// Gets the point of time value.
 		/// </summary>
 		/// <value>The date time.</value>
-		public DateTime DateTime { get; private set; }
+		public DateTime DateTime { get; set; }
 
 		/// <summary>
 		/// Gets the level.
 		/// </summary>
 		/// <value>The level.</value>
-		public double Level { get; private set; }
+		public double Level { get; set; }
 		#endregion
 
 		#region IEquatable<TankLevel> Members

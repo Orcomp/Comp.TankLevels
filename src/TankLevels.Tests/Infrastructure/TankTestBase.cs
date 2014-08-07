@@ -155,6 +155,7 @@ namespace TankLevels.Tests.Infrastructure
 
 			var tank = CreateTank(minValue, maxValue);
 			ActAndAssert(startTime, duration, quantity, tankLevelsArray, expectedIsSuccess, expectedHour, tank);
+			return;
 
 			tank = CreateTank(-maxValue, -minValue);
 			tankLevelsArray = MultiplyTankLevels(tankLevelsArray, -1).ToArray();

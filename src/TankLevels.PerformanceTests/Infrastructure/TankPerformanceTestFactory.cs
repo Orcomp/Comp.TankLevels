@@ -36,14 +36,15 @@ namespace TankLevels.PerformanceTests.Infrastructure
 		private const double ParameterEndHour = 168 + 10;
 		private const double ParameterDurationMin = 0.0;
 		private const double ParameterDurationMax = 36.0;
+
+		private const double Multiplier = 1.0;
 		#endregion
 
 		#region Properties
 		private IEnumerable<Type> ImplementationTypes
 		{
 			// TODO: Remove the dummy implementations and add your own here
-			//get { return new[] {typeof (DummyTank), typeof (OtherDummyTank)}; }
-			get { return new[] { typeof(DummyTank) }; }
+			get { return new[] {typeof (DummyTank), typeof (OtherDummyTank)}; }
 		}
 
 		private static string[] TestCaseNames
@@ -68,19 +69,31 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			}
 		}
 
-		private static IEnumerable<TestCase> SpecialTestCases
+		private static IEnumerable<TestCase> ZigZag1TestCases
 		{
 			get
 			{
 				return new[]
 				{
 					TestCase.ZiZag1,
-					TestCase.ZiZag2,
 					TestCase.ZiZag150,
-					TestCase.ZiZag250,
 					TestCase.ZiZag175,
+					TestCase.ZiZag190
+					//TestCase.Calibration,
+					//TestCase.OneInterval,
+				};
+			}
+		}
+
+		private static IEnumerable<TestCase> ZigZag2TestCases
+		{
+			get
+			{
+				return new[]
+				{
+					TestCase.ZiZag2,
+					TestCase.ZiZag250,
 					TestCase.ZiZag275,
-					TestCase.ZiZag190,
 					TestCase.ZiZag290
 					//TestCase.Calibration,
 					//TestCase.OneInterval,
@@ -94,7 +107,6 @@ namespace TankLevels.PerformanceTests.Infrastructure
 			{
 				return new[]
 				{
-					//TestCase.EmptyTank,
 					TestCase.RandomTank
 				};
 			}
@@ -102,68 +114,71 @@ namespace TankLevels.PerformanceTests.Infrastructure
 
 		private static IEnumerable<int> Sizes
 		{
-			//get { return new[] {100, 250, 500, 1000, 2000}; }
-			get { return new[] { 100, 500, 1000, 5000, 10000, 25000, 50000 }; }
-			//get { return new[] {10, 1000, 10000, 100000}; }
+			get { return new[] {100, 500, 1000, 5000, 10000, 25000, 50000, 100000}; }
 		}
 		#endregion
 
-		#region Methods
-		public IEnumerable<TestConfiguration> CheckOperationSpecialTestCases()
+		public IEnumerable<TestConfiguration> CheckOperationZigZag1TestCases()
 		{
-			return CheckOperationTestCases(SpecialTestCases);
+			return CheckOperationTestCases(ZigZag1TestCases, "ZigZag 1");
+		}
+
+		#region Methods
+		public IEnumerable<TestConfiguration> CheckOperationZigZag2TestCases()
+		{
+			return CheckOperationTestCases(ZigZag2TestCases, "ZigZag 2");
 		}
 
 		public IEnumerable<TestConfiguration> CheckOperationRandomTestCases()
 		{
-			return CheckOperationTestCases(RandomTestCases);
+			return CheckOperationTestCases(RandomTestCases, "Random");
 		}
 
-		public IEnumerable<TestConfiguration> CheckOperationTestCases(IEnumerable<TestCase> testCases)
+		public IEnumerable<TestConfiguration> CheckOperationTestCases(IEnumerable<TestCase> testCases, string name)
 		{
 			return from implementationType in ImplementationTypes
-				   from testCase in testCases
-				   from size in Sizes
-				   let prepare = new Action<IPerformanceTestCaseConfiguration>(i =>
-				   {
-					   var config = (TestConfiguration)i;
-					   config.Tank = CreateTank(size, testCase, implementationType);
-					   config.TankLevels = CreateTankLevels(size, testCase);
-					   config.Parameters = CreateParameters(size, testCase);
-					   config.Divider = SetDivider(size, testCase);
-				   })
-				   let run = new Action<IPerformanceTestCaseConfiguration>(i =>
-				   {
-					   var config = (TestConfiguration)i;
-					   var trueCount = 0;
-					   var falseCount = 0;
+			       from testCase in testCases
+			       from size in Sizes
+			       let prepare = new Action<IPerformanceTestCaseConfiguration>(i =>
+			       {
+				       var config = (TestConfiguration) i;
+				       config.Tank = CreateTank(size, testCase, implementationType);
+				       config.TankLevels = CreateTankLevels(size, testCase);
+				       config.Parameters = CreateParameters(size, testCase);
+				       config.Divider = SetDivider(size, testCase);
+			       })
+			       let run = new Action<IPerformanceTestCaseConfiguration>(i =>
+			       {
+				       var config = (TestConfiguration) i;
+				       var trueCount = 0;
+				       var falseCount = 0;
 
-					   //if (config.Parameters.Length == 0)
-					   //{
-					   //	Thread.Sleep(config.Size/10);
-					   //	return;
-					   //}
+				       //if (config.Parameters.Length == 0)
+				       //{
+				       //	Thread.Sleep(config.Size/10);
+				       //	return;
+				       //}
 
-					   foreach (var p in config.Parameters)
-					   {
-						   // ReSharper disable once UnusedVariable
-						   var result = config.Tank.CheckOperation(p.StartTime, p.Duration, p.Quantity, config.TankLevels);
-						   //Debug.WriteLine((result.StartTime - Time(0)).TotalHours);
-						   //var dummy = result.IsSuccess ? trueCount++ : falseCount++;
-					   }
-					   //Debug.WriteLine("I:{0}, S: {1}, C: {2}, NC: {3}", config.Identifier, config.Size, ((SimpleTank)config.Tank).Cache, ((SimpleTank)config.Tank).NoCache);
-					   //Debug.WriteLine("True: {0}, False: {1}", trueCount, falseCount);
-				   })
-				   select new TestConfiguration
-				   {
-					   TestName = "Tank CheckOperation",
-					   TargetImplementationType = implementationType, // Mandatory to set
-					   Identifier = string.Format("{0} {1}", implementationType.GetFriendlyName(), TestCaseNames[(int)testCase]),
-					   Size = size,
-					   Prepare = prepare,
-					   Run = run,
-					   IsReusable = true
-				   };
+				       foreach (var p in config.Parameters)
+				       {
+					       // ReSharper disable once UnusedVariable
+					       var result = config.Tank.CheckOperation(p.StartTime, p.Duration, p.Quantity, config.TankLevels);
+					       //Debug.WriteLine((result.StartTime - Time(0)).TotalHours);
+					       //var dummy = result.IsSuccess ? trueCount++ : falseCount++;
+				       }
+				       //Debug.WriteLine("I:{0}, S: {1}, C: {2}, NC: {3}", config.Identifier, config.Size, ((SimpleTank)config.Tank).Cache, ((SimpleTank)config.Tank).NoCache);
+				       //Debug.WriteLine("True: {0}, False: {1}", trueCount, falseCount);
+			       })
+			       select new TestConfiguration
+			       {
+				       TestName = name,
+				       TargetImplementationType = implementationType, // Mandatory to set
+				       Identifier = string.Format("{0} {1}", implementationType.GetFriendlyName(), TestCaseNames[(int) testCase]),
+				       Size = size,
+				       Prepare = prepare,
+				       Run = run,
+				       IsReusable = true
+			       };
 		}
 
 		private double SetDivider(int size, TestCase testCase)
@@ -190,39 +205,39 @@ namespace TankLevels.PerformanceTests.Infrastructure
 					break;
 
 				case TestCase.RandomTank:
-					{
-						result = new TankLevel[size];
-						var tickStep = (Time(TankEndHour) - Time(TankStartHour)).Ticks / size + 1;
-						var levelStep = maxLimit / (2 * size);
+				{
+					result = new TankLevel[size];
+					var tickStep = (Time(TankEndHour) - Time(TankStartHour)).Ticks/size + 1;
+					var levelStep = maxLimit/(2*size);
 
-						dateTime = Time(TankStartHour);
-						var level = maxLimit / 2;
-						for (var index = 0; index < result.Length; index++)
-						{
-							result[index] = new TankLevel(dateTime, level);
-							dateTime = dateTime.AddTicks(tickStep);
-							level -= levelStep;
-							level = -level;
-							levelStep = -levelStep;
-						}
-						return result;
+					dateTime = Time(TankStartHour);
+					var level = maxLimit/2;
+					for (var index = 0; index < result.Length; index++)
+					{
+						result[index] = new TankLevel(dateTime, level);
+						dateTime = dateTime.AddTicks(tickStep);
+						level -= levelStep;
+						level = -level;
+						levelStep = -levelStep;
 					}
+					return result;
+				}
 				case TestCase.ZiZag1:
 				case TestCase.ZiZag150:
 				case TestCase.ZiZag175:
 				case TestCase.ZiZag190:
+				{
+					result = new TankLevel[size + 1];
+					dateTime = Time(0);
+					for (var index = 0; index < size; index++)
 					{
-						result = new TankLevel[size + 1];
-						dateTime = Time(0);
-						for (var index = 0; index < size; index++)
-						{
-							var level = index % 2 == 0 ? index / 2 : (index / 2) + 2;
-							result[index] = new TankLevel(dateTime, level);
-							dateTime = dateTime.AddHours(1);
-						}
-						result[size] = new TankLevel(dateTime.AddHours(1), size / 2 - 1); // yes, AddHours(_1_)
-						return result;
+						var level = index%2 == 0 ? index/2 : (index/2) + 2;
+						result[index] = new TankLevel(dateTime, level);
+						dateTime = dateTime.AddHours(1);
 					}
+					result[size] = new TankLevel(dateTime.AddHours(1), size/2 - 1); // yes, AddHours(_1_)
+					return result;
+				}
 				case TestCase.ZiZag2:
 				case TestCase.ZiZag250:
 				case TestCase.ZiZag275:
@@ -232,7 +247,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 					dateTime = Time(0);
 					for (var index = 0; index < size; index++)
 					{
-						var level = index % 2 == 0 ? 0 : 10;
+						var level = index%2 == 0 ? 0 : 10;
 						result[index] = new TankLevel(dateTime, level);
 						dateTime = dateTime.AddHours(1);
 					}
@@ -278,17 +293,17 @@ namespace TankLevels.PerformanceTests.Infrastructure
 				case TestCase.ZiZag150:
 				case TestCase.ZiZag250:
 					result = new CheckOperationParameter[1];
-					result[0] = new CheckOperationParameter(Time(size * .5), Duration(1), 1.0);
+					result[0] = new CheckOperationParameter(Time(size*.5), Duration(1), 1.0);
 					return result;
 				case TestCase.ZiZag175:
 				case TestCase.ZiZag275:
 					result = new CheckOperationParameter[1];
-					result[0] = new CheckOperationParameter(Time(size * .75), Duration(1), 1.0);
+					result[0] = new CheckOperationParameter(Time(size*.75), Duration(1), 1.0);
 					return result;
 				case TestCase.ZiZag190:
 				case TestCase.ZiZag290:
 					result = new CheckOperationParameter[1];
-					result[0] = new CheckOperationParameter(Time(size * .9), Duration(1), 1.0);
+					result[0] = new CheckOperationParameter(Time(size*.9), Duration(1), 1.0);
 					return result;
 				case TestCase.OneInterval:
 					result = new CheckOperationParameter[1];
@@ -330,7 +345,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 				case TestCase.ZiZag190:
 
 					minLimit = 0;
-					maxLimit = size / 2 + 1;
+					maxLimit = size/2 + 1;
 					break;
 				case TestCase.ZiZag2:
 				case TestCase.ZiZag250:
@@ -339,6 +354,7 @@ namespace TankLevels.PerformanceTests.Infrastructure
 
 					minLimit = 0;
 					maxLimit = 10;
+
 					break;
 				case TestCase.OneInterval:
 					minLimit = 0;
@@ -356,7 +372,3 @@ namespace TankLevels.PerformanceTests.Infrastructure
 		#endregion
 	}
 }
-
-
-
-

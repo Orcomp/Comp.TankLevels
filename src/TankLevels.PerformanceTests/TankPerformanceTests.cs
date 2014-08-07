@@ -24,16 +24,22 @@ namespace TankLevels.PerformanceTests
 			Benchmarker.Init();
 		}
 
-		[Test, TestCaseSource(typeof (TankPerformanceTestFactory), "CheckOperationSpecialTestCases")]
-		public void CheckOperationSpecial(TestConfiguration config)
+		[Test, TestCaseSource(typeof (TankPerformanceTestFactory), "CheckOperationZigZag1TestCases")]
+		public void CheckOperationZigZag1(TestConfiguration config)
 		{
-			config.Benchmark(config.TestName, config.Size, 10);
+			config.Benchmark(config.TestName, config.Size, 3);
+		}
+		
+		[Test, TestCaseSource(typeof(TankPerformanceTestFactory), "CheckOperationZigZag2TestCases")]
+		public void CheckOperationZigZag2(TestConfiguration config)
+		{
+			config.Benchmark(config.TestName, config.Size, 3);
 		}
 
 		[Test, TestCaseSource(typeof (TankPerformanceTestFactory), "CheckOperationRandomTestCases")]
 		public void CheckOperationRandom(TestConfiguration config)
 		{
-			config.Benchmark(config.TestName, config.Size, 10);
+			config.Benchmark(config.TestName, config.Size, 3);
 		}
 	}
 }

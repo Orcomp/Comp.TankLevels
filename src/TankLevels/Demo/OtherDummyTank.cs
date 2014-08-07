@@ -47,7 +47,7 @@ namespace TankLevels.Demo
 		public CheckOperationResult CheckOperation(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels)
 		{
 			// This dummy code. You can safely delete it and write something real instead.
-			Thread.Sleep(tankLevels.Count()/200);
+			Thread.Sleep(tankLevels.Count()/5000);
 			return new CheckOperationResult(startTime.Second%2 == 0, startTime.AddSeconds(1000));
 		}
 

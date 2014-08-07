@@ -173,7 +173,7 @@ namespace TankLevels.Tests.TankInterface
 		}
 
 		[Test]
-		public void CheckOperation__Add_11_At_0_Expected_False()
+		public void CheckOperation_Add_11_At_0_Expected_False()
 		{
 			#region Timeline
 			// |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
