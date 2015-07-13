@@ -1,14 +1,11 @@
-﻿#region Copyright (c) 2014 Orcomp development team.
 // -------------------------------------------------------------------------------------------------------------------
 // <copyright file="TankPerformanceTestFactory.cs" company="Orcomp development team">
 //   Copyright (c) 2014 Orcomp development team. All rights reserved.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-#endregion
 
 namespace TankLevels.PerformanceTests.Infrastructure
 {
-	#region using...
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -17,8 +14,6 @@ namespace TankLevels.PerformanceTests.Infrastructure
 	using NUnitBenchmarker;
 	using NUnitBenchmarker.Configuration;
 	using Tests.Infrastructure;
-
-	#endregion
 
 	public class TankPerformanceTestFactory : TankTestBase
 	{
