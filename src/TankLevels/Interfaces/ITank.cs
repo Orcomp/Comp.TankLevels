@@ -23,12 +23,14 @@ namespace TankLevels
     {
         #region Properties
 
+        // TODO: Rename to MinLimit?
         /// <summary>
         /// Returns predefined minimum allowed quantity for the tank.
         /// </summary>
         /// <value>The minimum allowed quantity for the tank.</value>
         double MinValue { get; }
 
+        // TODO: Rename to MaxLimit?
         /// <summary>
         /// Returns predefined maximum allowed quantity for the tank.
         /// </summary>
@@ -39,6 +41,7 @@ namespace TankLevels
 
         #region Methods
 
+        // TODO: Document return value's meaning - not type!
         /// <summary>
         /// Checks a hypothetical put or take away operation against remaining between the min and max constraints.
         /// </summary>
@@ -46,7 +49,7 @@ namespace TankLevels
         /// <param name="duration">The duration of the operation.</param>
         /// <param name="quantity">The quantity to put or take away. Positive values represent a put operation while negative values are take aways.</param>
         /// <param name="tankLevels">Tank levels are a serie of time/level pairs, and represent the Tank's level over the time.</param>
-		/// <returns>CheckOperationResult.</returns>
+        /// <returns></returns>
         CheckOperationResult CheckOperation(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels);
 
         #endregion
