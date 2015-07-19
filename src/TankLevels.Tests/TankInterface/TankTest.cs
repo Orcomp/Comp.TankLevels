@@ -259,6 +259,50 @@ namespace TankLevels.Tests.TankInterface
         }
 
         [Test]
+        public void CheckOperation_Pushing_To_Avoid_Overflow_Causes_Late_End_Expected_False()
+        {
+            #region Timeline
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            //
+            // Levels:
+            // 5.0                                              8.0  0.0  0.0
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            //
+            // Check for:
+            //        8
+            // |--------------|
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            //
+            // Expected Result:
+            // IsSuccess = false
+            // StartTime = N/A (default(DateTime))
+            //
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            #endregion
+            var tankLevels = new List<TankLevel>
+            {
+                new TankLevel(Time(0), 5),
+                new TankLevel(Time(10), 8),
+                new TankLevel(Time(11), 0),
+                new TankLevel(Time(12), 0),
+            };
+
+            var startTime = Time(0);
+            var duration = Duration(3);
+            const double quantity = 8;
+            const int minValue = -10;
+            const int maxValue = 10;
+            const bool expectedIsSuccess = false;
+            const double expectedHour = -1; // N/A if IsSuccess is false. StartTime will be checked against default(DateTime)
+
+            ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
+        }
+
+        [Test]
         public void CheckOperation_StartBeforeFirstTankData_Expected_True_6()
         {
             #region Timeline
