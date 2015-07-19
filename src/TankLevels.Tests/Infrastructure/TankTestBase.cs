@@ -71,7 +71,7 @@ namespace TankLevels.Tests.Infrastructure
                 to = TimeSpan.MaxValue;
             }
             var range = to - @from;
-            var randTimeSpan = new TimeSpan((long) (Random.NextDouble() * range.Ticks));
+            var randTimeSpan = new TimeSpan((long)(Random.NextDouble() * range.Ticks));
             return from + randTimeSpan;
         }
 
@@ -95,7 +95,7 @@ namespace TankLevels.Tests.Infrastructure
                 to = DateTime.MaxValue;
             }
             var range = to - @from;
-            var randTimeSpan = new TimeSpan((long) (Random.NextDouble() * range.Ticks));
+            var randTimeSpan = new TimeSpan((long)(Random.NextDouble() * range.Ticks));
             return from + randTimeSpan;
         }
 
@@ -128,7 +128,7 @@ namespace TankLevels.Tests.Infrastructure
             }
 
             var constructorInfos = ImplementationType.GetConstructors().Where(ci => ci.GetParameters().Count() == 2);
-            return (ITank) constructorInfos.First()
+            return (ITank)constructorInfos.First()
                 .Invoke(new[]
                 {
                     minValue.Equals(DoubleMissing) ? Type.Missing : minValue,
@@ -169,16 +169,16 @@ namespace TankLevels.Tests.Infrastructure
             // expectedIsSuccess = true; // Should make all expected false fail
             // expectedHour = expectedHour + 0.000001; // Should make all expected true fail by slightly changed starttime
 
-            if (result.IsSuccess)
+            if (expectedIsSuccess)
             {
-                Assert.IsTrue(expectedIsSuccess);
+                Assert.IsTrue(result.IsSuccess);
 
                 // 5000 ticks equals 50 nanoseconds.
                 Assert.Less(Math.Abs(Time(expectedHour).Ticks - result.StartTime.Ticks), 5000);
             }
             else
             {
-                Assert.IsFalse(expectedIsSuccess);
+                Assert.IsFalse(result.IsSuccess);
             }
         }
 
