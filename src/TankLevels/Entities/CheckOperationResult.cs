@@ -26,18 +26,6 @@ namespace TankLevels.Entities
             StartTime = startTime;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CheckOperationResult" /> struct.
-        /// </summary>
-        /// <param name="isSuccess">if set to <c>true</c> means this instance represents a successful check operation result.</param>
-        /// <param name="startTime">The start time of the operation if it is possible. Otherwise it is N/A and its recommended value is default(<see cref="DateTime" />) </param>
-        public CheckOperationResult(bool isSuccess, DateTime startTime)
-            : this()
-        {
-            IsSuccess = isSuccess;
-            StartTime = startTime;
-        }
-
         #endregion
 
         #region Properties
@@ -82,7 +70,7 @@ namespace TankLevels.Entities
             if (ReferenceEquals(null, obj))
                 return false;
 
-            return obj is CheckOperationResult && Equals((CheckOperationResult) obj);
+            return obj is CheckOperationResult && Equals((CheckOperationResult)obj);
         }
 
         /// <summary>

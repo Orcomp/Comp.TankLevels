@@ -23,19 +23,17 @@ namespace TankLevels
     {
         #region Properties
 
-        // TODO: Rename to MinLimit?
         /// <summary>
         /// Returns predefined minimum allowed quantity for the tank.
         /// </summary>
         /// <value>The minimum allowed quantity for the tank.</value>
-        double MinValue { get; }
+        double MinLimit { get; }
 
-        // TODO: Rename to MaxLimit?
         /// <summary>
         /// Returns predefined maximum allowed quantity for the tank.
         /// </summary>
         /// <value>The maximum allowed quantity for the tank.</value>
-        double MaxValue { get; }
+        double MaxLimit { get; }
 
         #endregion
 
@@ -58,23 +56,23 @@ namespace TankLevels
     [ContractClassFor(typeof(ITank))]
     internal abstract class TankContract : ITank
     {
-        public double MinValue
+        public double MinLimit
         {
             get
             {
                 // Less than MaxValue
-                Contract.Ensures(Contract.Result<double>().CompareTo(MaxValue) <= 0);
+                Contract.Ensures(Contract.Result<double>().CompareTo(MaxLimit) <= 0);
 
                 throw new NotImplementedException();
             }
         }
 
-        public double MaxValue
+        public double MaxLimit
         {
             get
             {
                 // Greater than MinValue
-                Contract.Ensures(MinValue.CompareTo(Contract.Result<double>()) <= 0);
+                Contract.Ensures(MinLimit.CompareTo(Contract.Result<double>()) <= 0);
 
                 throw new NotImplementedException();
             }
@@ -87,7 +85,7 @@ namespace TankLevels
             Contract.Requires(duration.Ticks >= 0);
 
             // All tank levels must be within the tank's limits
-            Contract.Requires(Contract.ForAll(tankLevels, tankLevel => MinValue <= tankLevel.Level && tankLevel.Level <= MaxValue));
+            Contract.Requires(Contract.ForAll(tankLevels, tankLevel => MinLimit <= tankLevel.Level && tankLevel.Level <= MaxLimit));
 
             // Tank levels have to be sorted in time
             Contract.Requires(!tankLevels.Any() || Contract.ForAll(0, tankLevels.Count() - 1, i => tankLevels.ToArray()[i].DateTime <= tankLevels.ToArray()[i + 1].DateTime));
@@ -104,7 +102,7 @@ namespace TankLevels
             // After operation, the tank never overflows/underflows
             Contract.Ensures(!Contract.Result<CheckOperationResult>().IsSuccess
                 || tankLevels.All(tankLevel => tankLevel.DateTime <= Contract.Result<CheckOperationResult>().StartTime + duration
-                    || MinValue <= tankLevel.Level + quantity && tankLevel.Level + quantity <= MaxValue
+                    || MinLimit <= tankLevel.Level + quantity && tankLevel.Level + quantity <= MaxLimit
                 ));
 
             throw new NotImplementedException();
