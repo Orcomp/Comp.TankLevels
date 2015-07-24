@@ -21,12 +21,12 @@ namespace TankLevels.Demo
         /// <summary>
         /// Initializes a new instance of the <see cref="DummyTank" /> class.
         /// </summary>
-        /// <param name="minValue">The minimum allowed quantity for the tank.</param>
-        /// <param name="maxValue">The maximum allowed quantity for the tank.</param>
-        public DummyTank(double minValue = double.MinValue, double maxValue = double.MaxValue)
+        /// <param name="minLimit">The minimum allowed quantity for the tank.</param>
+        /// <param name="maxLimit">The maximum allowed quantity for the tank.</param>
+        public DummyTank(double minLimit = double.MinValue, double maxLimit = double.MaxValue)
         {
-            MinValue = minValue;
-            MaxValue = maxValue;
+            MinLimit = minLimit;
+            MaxLimit = maxLimit;
         }
 
         #endregion
@@ -34,10 +34,10 @@ namespace TankLevels.Demo
         #region ITank Members
 
         /// <inheritdoc/>
-        public double MinValue { get; private set; }
+        public double MinLimit { get; private set; }
 
         /// <inheritdoc/>
-        public double MaxValue { get; private set; }
+        public double MaxLimit { get; private set; }
 
         /// <summary>
         /// Checks a hypothetical put or take away operation against remaining between the min and max constraints.
@@ -51,7 +51,7 @@ namespace TankLevels.Demo
         {
             // This dummy code. You can safely delete it and write something real instead.
             Thread.Sleep(tankLevels.Count() / 10000);
-            return new CheckOperationResult(startTime.Second % 2 == 0, startTime.AddSeconds(1000));
+            return new CheckOperationResult(startTime.AddSeconds(1000));
         }
 
         #endregion
