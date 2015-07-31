@@ -152,11 +152,10 @@ namespace TankLevels.Tests.Infrastructure
 
             var tank = CreateTank(minValue, maxValue);
             ActAndAssert(startTime, duration, quantity, tankLevelsArray, expectedIsSuccess, expectedHour, tank);
-            return;
 
-            // tank = CreateTank(-maxValue, -minValue);
-            // tankLevelsArray = MultiplyTankLevels(tankLevelsArray, -1).ToArray();
-            // ActAndAssert(startTime, duration, -quantity, tankLevelsArray, expectedIsSuccess, expectedHour, tank);
+            tank = CreateTank(-maxValue, -minValue);
+            tankLevelsArray = MultiplyTankLevels(tankLevelsArray, -1).ToArray();
+            ActAndAssert(startTime, duration, -quantity, tankLevelsArray, expectedIsSuccess, expectedHour, tank);
         }
 
         private static void ActAndAssert(DateTime startTime, TimeSpan duration, double quantity, IEnumerable<TankLevel> tankLevels, bool expectedIsSuccess, double expectedHour, ITank tank)
