@@ -38,6 +38,79 @@ namespace TankLevels.Tests.TankInterface
     [TestFixture]
     public class TankTest : TankTestBase
     {
+        [Test, Combinatorial]
+        public void CheckOperation_Add_Short_Operation([Values(0, 1)] int duration, [Values(0, 5, 10, 10.1)] double quantity)
+        {
+            #region Timeline
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            //
+            // Levels:
+            // 0.0
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            //
+            // Check for:
+            // ?
+            // |
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            #endregion
+
+            var tankLevels = new List<TankLevel>
+            {
+                new TankLevel(Time(0), 0)
+            };
+
+            var startTime = Time(0);
+            const double expectedHour = 0;
+            const int minValue = -10;
+            const int maxValue = 10;
+            bool expectedIsSuccess = duration == 0 && quantity <= maxValue;
+
+            ActAndAssert(startTime, Duration(duration), quantity, tankLevels, expectedIsSuccess, expectedHour, minValue, maxValue);
+        }
+
+        [Test]
+        [TestCase(0, true)]
+        [TestCase(1, true)]
+        [TestCase(5, true)]
+        [TestCase(5.1, false)]
+        public void CheckOperation_Add_Short_Operation(double start, bool expectedIsSuccess)
+        {
+            #region Timeline
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            //
+            // Levels:
+            // ?                        ??  6.0            9.0  10.0
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            //
+            // Check for:
+            //             0
+            // |------------------------|
+            // |----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            // 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16
+            #endregion
+
+            var tankLevels = new List<TankLevel>
+            {
+                new TankLevel(Time(start), 10),
+                new TankLevel(Time(6), 6),
+                new TankLevel(Time(9), 9),
+                new TankLevel(Time(10), 10),
+            };
+
+            var startTime = Time(0);
+            var duration = Duration(5);
+            const double quantity = 0;
+            const int minValue = -10;
+            const int maxValue = 10;
+
+            ActAndAssert(startTime, duration, quantity, tankLevels, expectedIsSuccess, start, minValue, maxValue);
+        }
+
         [Test]
         public void CheckOperation_Add_5_At_0_Expected_True_0()
         {
